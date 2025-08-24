@@ -51,8 +51,8 @@ function SimpleSprayerControl() {
     const handlePressureChange = (newPressure) => {
         setPressure(newPressure);
         
-        // Update local config then save to persistent storage
-        MODULE_INTERFACE.data.setLocalConfig({ pressure_setpoint: newPressure });
+        // Update current config then save to persistent storage
+        MODULE_INTERFACE.data.setConfig({ pressure_setpoint: newPressure });
         MODULE_INTERFACE.data.saveConfig();
         
         // Publish command to robot

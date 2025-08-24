@@ -106,18 +106,18 @@
                 }
             });
 
-            // Pressure slider with local config update
+            // Pressure slider with config update
             pressureSlider.addEventListener('input', function() {
                 pressureValue.textContent = this.value;
-                // Update local config (temporary)
-                MODULE_INTERFACE.data.setLocalConfig({ pressure: parseInt(this.value) });
+                // Update current config
+                MODULE_INTERFACE.data.setConfig({ pressure: parseInt(this.value) });
             });
 
             // Save configuration with error handling
             saveConfigBtn.addEventListener('click', function() {
                 try {
-                    // Update local config first
-                    MODULE_INTERFACE.data.setLocalConfig({ 
+                    // Update current config first
+                    MODULE_INTERFACE.data.setConfig({ 
                         pressure_setpoint: parseInt(pressureSlider.value),
                         last_saved: new Date().toISOString()
                     });

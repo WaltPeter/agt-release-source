@@ -1049,6 +1049,7 @@ if (typeof module !== 'undefined' && module.exports) {
                 
                 // Always write the robot config (overwrite existing)
                 window.robot_list[robotName] = {
+                    ...window.robot_list[robotName],
                     robot_type: config.robotConfig.type || 'ranger1s',
                     namespace: config.robotConfig.namespace || 'test_robot',
                     com_port: config.robotConfig.com_port || 'ws://localhost:9090',

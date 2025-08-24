@@ -12,9 +12,9 @@ export interface RosAPI {
 }
 
 export interface DataAPI {
-    // Local configuration (not persisted)
-    getLocalConfig(): Record<string, any>;
-    setLocalConfig(updates: Record<string, any>): void;
+    // Configuration management (all stored in robot_list)
+    getConfig(): Record<string, any>;
+    setConfig(updates: Record<string, any>): void;
     
     // Persistent configuration
     loadConfig(): Record<string, any>;
