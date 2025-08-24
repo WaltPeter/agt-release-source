@@ -1,0 +1,44 @@
+{
+  "name": "@vitrox-agt/robot-module-interface",
+  "version": "1.0.0",
+  "description": "Simplified interface for robot control module development",
+  "main": "module-interface.js",
+  "module": "module-interface.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "module-interface.js",
+    "src/",
+    "types/",
+    "examples/",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node test/run-tests.js",
+    "build": "echo \"No build required\"",
+    "prepare": "echo \"Package ready\""
+  },
+  "keywords": [
+    "robot",
+    "control",
+    "interface",
+    "ros",
+    "automation",
+    "agriculture",
+    "module",
+    "simplified"
+  ],
+  "author": "Vitrox AGT Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.vitrox.com.my/agt/ranger1s/semi_autonomous_client.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.vitrox.com.my/agt/ranger1s/semi_autonomous_client/issues"
+  },
+  "homepage": "https://gitlab.vitrox.com.my/agt/ranger1s/semi_autonomous_client#readme",
+  "peerDependencies": {},
+  "devDependencies": {},
+  "jsdelivr": "module-interface.js",
+  "unpkg": "module-interface.js"
+}

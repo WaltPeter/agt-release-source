@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplified Robot Module Interface Example</title>
+    <script src="../module-interface.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { margin: 5px; padding: 8px 15px; }
+        .status { font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+        #sensorData { background: #f5f5f5; padding: 10px; border-radius: 3px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Simplified Robot Module Interface - Demo</h1>
+    <p>This example demonstrates all API functions with proper error handling.</p>
+    
+    <div class="section">
+        <h2>🔗 Connection</h2>
+        <button id="connectBtn">Connect to Robot</button>
+        <div id="status" class="status">Disconnected</div>
+    </div>
+
+    <div class="section">
+        <h2>⚙️ Configuration Management</h2>
+        <label>Pressure Setting: 
+            <input type="range" id="pressureSlider" min="0" max="100" value="50">
+        </label>
+        <span id="pressureValue">50</span> PSI
+        <br><br>
+        <button id="saveConfigBtn">Save Configuration</button>
+        <button id="loadConfigBtn">Load Configuration</button>
+        <div id="configStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>📡 ROS Communication</h2>
+        <button id="publishBtn">Publish Pressure Command</button>
+        <button id="subscribeBtn">Subscribe to Sensor Data</button>
+        <button id="getTopicsBtn">Get Topic List</button>
+        <button id="unsubscribeBtn">Unsubscribe All</button>
+    </div>
+
+    <div class="section">
+        <h2>📊 Sensor Data</h2>
+        <div id="sensorData">No sensor data available</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // REQUIRED: Initialize with development configuration
+            MODULE_INTERFACE.init({
+                moduleName: 'demo_module',
+                robotConfig: {
+                    com_port: 'ws://localhost:9090',
+                    namespace: 'test_robot',
+                    type: 'ranger1s',
+                    name: 'Development Robot'
+                },
+                moduleConfig: {
+                    is_enabled: true,
+                    pressure_setpoint: 50
+                }
+            });
+            // Get DOM elements
+            const connectBtn = document.getElementById('connectBtn');
+            const statusDiv = document.getElementById('status');
+            const pressureSlider = document.getElementById('pressureSlider');
+            const pressureValue = document.getElementById('pressureValue');
+            const saveConfigBtn = document.getElementById('saveConfigBtn');
+            const loadConfigBtn = document.getElementById('loadConfigBtn');
+            const configStatus = document.getElementById('configStatus');
+            const publishBtn = document.getElementById('publishBtn');
+            const subscribeBtn = document.getElementById('subscribeBtn');
+            const getTopicsBtn = document.getElementById('getTopicsBtn');
+            const unsubscribeBtn = document.getElementById('unsubscribeBtn');
+            const sensorDataDiv = document.getElementById('sensorData');
+
+            let activeSubscriptions = [];
+
+            // Helper function to update status with proper styling
+            function updateStatus(message, isError = false, isSuccess = false) {
+                statusDiv.textContent = message;
+                statusDiv.className = 'status ' + (isError ? 'error' : isSuccess ? 'success' : '');
+            }
+
+            function updateConfigStatus(message, isError = false) {
+                configStatus.textContent = message;
+                configStatus.className = isError ? 'error' : 'success';
+            }
+
+            // Connect button with error handling
+            connectBtn.addEventListener('click', async function() {
+                try {
+                    updateStatus('Connecting...', false, false);
+                    await MODULE_INTERFACE.ros.connect('ws://localhost:9090');
+                    updateStatus('Connected to ROS', false, true);
+                    connectBtn.textContent = 'Reconnect';
+                } catch (error) {
+                    updateStatus('Connection failed: ' + error.message, true, false);
+                    console.error('Connection error:', error);
+                }
+            });
+
+            // Pressure slider with local config update
+            pressureSlider.addEventListener('input', function() {
+                pressureValue.textContent = this.value;
+                // Update local config (temporary)
+                MODULE_INTERFACE.data.setLocalConfig({ pressure: parseInt(this.value) });
+            });
+
+            // Save configuration with error handling
+            saveConfigBtn.addEventListener('click', function() {
+                try {
+                    // Update local config first
+                    MODULE_INTERFACE.data.setLocalConfig({ 
+                        pressure_setpoint: parseInt(pressureSlider.value),
+                        last_saved: new Date().toISOString()
+                    });
+                    // Then save to persistent storage
+                    const success = MODULE_INTERFACE.data.saveConfig();
+                    updateConfigStatus(
+                        success ? 'Configuration saved successfully!' : 'Failed to save configuration', 
+                        !success
+                    );
+                } catch (error) {
+                    updateConfigStatus('Error saving config: ' + error.message, true);
+                }
+            });
+
+            // Load configuration
+            loadConfigBtn.addEventListener('click', function() {
+                try {
+                    const config = MODULE_INTERFACE.data.loadConfig();
+                    console.log('Loaded config:', config);
+                    
+                    if (config.pressure_setpoint !== undefined) {
+                        pressureSlider.value = config.pressure_setpoint;
+                        pressureValue.textContent = config.pressure_setpoint;
+                    }
+                    
+                    updateConfigStatus(
+                        `Configuration loaded! ${config.last_saved ? 'Last saved: ' + new Date(config.last_saved).toLocaleString() : ''}`
+                    );
+                } catch (error) {
+                    updateConfigStatus('Error loading config: ' + error.message, true);
+                }
+            });
+
+            // Publish command with connection check
+            publishBtn.addEventListener('click', function() {
+                // Always check connection status before operations (from CDN_MODULE_API.md)
+                if (!MODULE_INTERFACE.ros.isConnected()) {
+                    updateStatus('Not connected to ROS - connect first!', true);
+                    return;
+                }
+                
+                const pressure = parseInt(pressureSlider.value);
+                const success = MODULE_INTERFACE.ros.publish(
+                    '/sprayer/command', 
+                    'std_msgs/String', 
+                    { data: `SET_PRESSURE,${pressure}` }
+                );
+                
+                if (success) {
+                    updateStatus(`Command published: SET_PRESSURE,${pressure}`, false, true);
+                } else {
+                    updateStatus('Failed to publish command', true);
+                }
+            });
+
+            // Subscribe to sensor data with error handling
+            subscribeBtn.addEventListener('click', function() {
+                if (!MODULE_INTERFACE.ros.isConnected()) {
+                    updateStatus('Not connected to ROS - connect first!', true);
+                    return;
+                }
+                
+                const subscriber = MODULE_INTERFACE.ros.subscribe('/sprayer/sensors', 'std_msgs/String', function(message) {
+                    try {
+                        const data = JSON.parse(message.data);
+                        // Handle sensor data in your application
+                        
+                        sensorDataDiv.textContent = JSON.stringify(data, null, 2);
+                        console.log('Updated sensor data:', data);
+                    } catch (error) {
+                        sensorDataDiv.textContent = 'Raw sensor data: ' + message.data;
+                        console.error('Failed to parse sensor data:', error);
+                    }
+                });
+                
+                if (subscriber) {
+                    activeSubscriptions.push('/sprayer/sensors');
+                    updateStatus('Subscribed to sensor data!', false, true);
+                } else {
+                    updateStatus('Failed to create subscription', true);
+                }
+            });
+
+            // Get topic list
+            getTopicsBtn.addEventListener('click', async function() {
+                try {
+                    const topics = await MODULE_INTERFACE.ros.getTopicList();
+                    const topicList = topics.length > 0 ? topics.join('\n') : 'No topics available';
+                    alert(`Available ROS topics (${topics.length}):\n${topicList}`);
+                    console.log('ROS topics:', topics);
+                } catch (error) {
+                    alert('Failed to get topics: ' + error.message);
+                    console.error('Topic list error:', error);
+                }
+            });
+
+            // Unsubscribe from all topics
+            unsubscribeBtn.addEventListener('click', function() {
+                let unsubscribed = 0;
+                activeSubscriptions.forEach(topic => {
+                    if (MODULE_INTERFACE.ros.unsubscribe(topic)) {
+                        unsubscribed++;
+                    }
+                });
+                
+                activeSubscriptions = [];
+                sensorDataDiv.textContent = 'Unsubscribed from all topics';
+                updateStatus(`Unsubscribed from ${unsubscribed} topics`, false, true);
+            });
+
+            // Load initial configuration on page load
+            setTimeout(() => {
+                loadConfigBtn.click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
