@@ -56,6 +56,7 @@
                     publish: (topic, messageType, data) => this.publish(topic, messageType, data),
                     subscribe: (topic, messageType, callback) => this.subscribe(topic, messageType, callback),
                     unsubscribe: (topic) => this.unsubscribe(topic),
+                    disconnect: () => this.disconnect(),
                     getTopicList: () => this.getTopicList(),
                     isConnected: () => this.state.connected
                 },
@@ -195,6 +196,31 @@
                 return true;
             }
             return false;
+        }
+
+        // Safe disconnect - only affects this module's subscriptions
+        disconnect() {
+            console.log(`MODULE_INTERFACE: Disconnecting module ${this.moduleName} from all topics`);
+            
+            // Unsubscribe from all topics for this module
+            const topics = Array.from(this.subscribers.keys());
+            let unsubscribedCount = 0;
+            
+            topics.forEach(topicName => {
+                if (this.unsubscribe(topicName)) {
+                    unsubscribedCount++;
+                }
+            });
+            
+            console.log(`MODULE_INTERFACE: Unsubscribed from ${unsubscribedCount} topics`);
+            
+            // Clear subscriber map
+            this.subscribers.clear();
+            
+            // Note: WebSocket connection remains open for other components
+            console.log('MODULE_INTERFACE: Module disconnected (WebSocket connection preserved for other components)');
+            
+            return true;
         }
 
         getTopicList() {
