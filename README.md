@@ -8,7 +8,7 @@ This repository hosts the CDN-ready files for the AGT Studio Robot Module Interf
 
 ```html
 <!-- Include the main interface -->
-<script src="https://waltpeter.github.io/agt-release-source/module-interface.js"></script>
+<script src="https://waltpeter.github.io/agt-release-source/dist/robot-module-interface.min.js"></script>
 
 <!-- Your module code -->
 <script>
@@ -30,12 +30,6 @@ This repository hosts the CDN-ready files for the AGT Studio Robot Module Interf
   // Use the API
   MODULE_INTERFACE.ros.connect();
 </script>
-```
-
-### Via Raw GitHub URL (Alternative)
-
-```html
-<script src="https://raw.githubusercontent.com/WaltPeter/agt-release-source/cdn/module-interface.js"></script>
 ```
 
 ## 📦 Package Contents
