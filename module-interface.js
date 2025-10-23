@@ -27,8 +27,10 @@
      */
     class ModuleInterface {
         constructor(options = {}) {
+            // Allow construction without moduleName - it will be required when init() is called
+            // This allows the global MODULE_INTERFACE object to be created immediately
             this.options = {
-                moduleName: options.moduleName || 'robot-module',
+                moduleName: options.moduleName || null,
                 ...options
             };
 
@@ -40,8 +42,21 @@
             this.subscribers = new Map();
             this.publishers = new Map();
             this.initialized = false;
-            
+
             this.setupGlobalInterface();
+        }
+
+        /**
+         * Check if MODULE_INTERFACE has been initialized
+         * Throws error if not initialized
+         */
+        _ensureInitialized(methodName) {
+            if (!this.initialized || !this.options.moduleName) {
+                throw new Error(
+                    `MODULE_INTERFACE.${methodName}() called before initialization. ` +
+                    `Please call MODULE_INTERFACE.init({ moduleName: '...' }) first.`
+                );
+            }
         }
 
         setupGlobalInterface() {
