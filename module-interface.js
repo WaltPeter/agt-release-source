@@ -72,6 +72,7 @@
                     subscribe: (topic, messageType, callback) => this.subscribe(topic, messageType, callback),
                     unsubscribe: (topic) => this.unsubscribe(topic),
                     getTopicList: () => this.getTopicList(),
+                    getTopics: () => this.getTopics(),
                     isConnected: () => this.state.connected
                 },
 
@@ -186,11 +187,12 @@
 
             try {
                 // Use the appropriate connection manager
-                const manager = (typeof window !== 'undefined' && window.rosManager) ? 
+                const manager = (typeof window !== 'undefined' && window.rosManager) ?
                     window.rosManager : window.webSocketRosManager;
-                
+
                 if (manager) {
                     // Use connection manager (both production and development)
+                    // messageType is optional - rosbridge will auto-determine if not provided
                     return manager.subscribe(this.getComPort(), topicName, messageType, callback);
                 } else {
                     console.error('No ROS manager available');
@@ -219,9 +221,9 @@
 
             try {
                 // Use the appropriate connection manager
-                const manager = (typeof window !== 'undefined' && window.rosManager) ? 
+                const manager = (typeof window !== 'undefined' && window.rosManager) ?
                     window.rosManager : window.webSocketRosManager;
-                
+
                 if (manager && manager.getTopics) {
                     return manager.getTopics(this.getComPort())
                         .then(result => result.topics || [])
@@ -239,28 +241,70 @@
             }
         }
 
+        getTopics() {
+            if (!this.ros || !this.state.connected) {
+                return Promise.resolve({ topics: [], types: [] });
+            }
+
+            try {
+                // Use the appropriate connection manager
+                const manager = (typeof window !== 'undefined' && window.rosManager) ?
+                    window.rosManager : window.webSocketRosManager;
+
+                if (manager && manager.getTopics) {
+                    return manager.getTopics(this.getComPort())
+                        .catch(error => {
+                            console.error('Failed to get topics:', error);
+                            return { topics: [], types: [] };
+                        });
+                } else {
+                    console.warn('getTopics not available');
+                    return Promise.resolve({ topics: [], types: [] });
+                }
+            } catch (error) {
+                console.error('Failed to get topics:', error);
+                return Promise.resolve({ topics: [], types: [] });
+            }
+        }
+
         // Write configuration directly to robot_list (any mode)
         writeConfigToRobotList(config) {
             if (typeof window === 'undefined') return;
-            
+
             // Initialize robot_list if not exists
             if (!window.robot_list) {
                 window.robot_list = {};
             }
-            
+
+            // Determine robot name - prioritize config.robotName, then extract from robotConfig, then fallback
+            let robotName = config.robotName;
+            if (!robotName && config.robotConfig) {
+                // Extract from robotConfig object (check various possible name fields)
+                robotName = config.robotConfig.name || config.robotConfig.robot_name;
+            }
+            if (!robotName) {
+                // Fallback to getRobotName() or default
+                robotName = this.getRobotName() || 'development_robot';
+            }
+
             // Write robot configuration if provided
             if (config.robotConfig) {
-                const robotName = config.robotConfig.name || 'development_robot';
-                
-                // Always write the robot config (overwrite existing)
-                window.robot_list[robotName] = {
-                    ...window.robot_list[robotName],
-                    robot_type: config.robotConfig.type || 'ranger1s',
-                    namespace: config.robotConfig.namespace || 'test_robot',
-                    com_port: config.robotConfig.com_port || 'ws://localhost:9090',
-                    modules: window.robot_list[robotName]?.modules || {}
-                };
-                
+                // Only write robot config if the robot doesn't already exist
+                // This prevents overwriting existing robot configurations
+                if (!window.robot_list[robotName]) {
+                    window.robot_list[robotName] = {
+                        robot_type: config.robotConfig.type || config.robotConfig.robot_type || 'ranger1s',
+                        namespace: config.robotConfig.namespace || 'test_robot',
+                        com_port: config.robotConfig.com_port || 'ws://localhost:9090',
+                        modules: {}
+                    };
+                }
+
+                // Ensure modules object exists
+                if (!window.robot_list[robotName].modules) {
+                    window.robot_list[robotName].modules = {};
+                }
+
                 // Write module configuration if provided
                 if (config.moduleConfig) {
                     window.robot_list[robotName].modules[this.options.moduleName] = {
@@ -268,12 +312,16 @@
                     };
                 }
             } else if (config.moduleConfig) {
-                // Only module config provided - use current robot name
-                const robotName = this.getRobotName();
+                // Only module config provided - update existing robot's module config
                 if (window.robot_list[robotName]) {
+                    if (!window.robot_list[robotName].modules) {
+                        window.robot_list[robotName].modules = {};
+                    }
                     window.robot_list[robotName].modules[this.options.moduleName] = {
                         ...config.moduleConfig
                     };
+                } else {
+                    console.warn(`Cannot write module config: robot "${robotName}" not found in robot_list`);
                 }
             }
         }

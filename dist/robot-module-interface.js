@@ -889,6 +889,7 @@ if (typeof module !== 'undefined' && module.exports) {
                     subscribe: (topic, messageType, callback) => this.subscribe(topic, messageType, callback),
                     unsubscribe: (topic) => this.unsubscribe(topic),
                     getTopicList: () => this.getTopicList(),
+                    getTopics: () => this.getTopics(),
                     isConnected: () => this.state.connected
                 },
 
@@ -1036,9 +1037,9 @@ if (typeof module !== 'undefined' && module.exports) {
 
             try {
                 // Use the appropriate connection manager
-                const manager = (typeof window !== 'undefined' && window.rosManager) ? 
+                const manager = (typeof window !== 'undefined' && window.rosManager) ?
                     window.rosManager : window.webSocketRosManager;
-                
+
                 if (manager && manager.getTopics) {
                     return manager.getTopics(this.getComPort())
                         .then(result => result.topics || [])
@@ -1053,6 +1054,32 @@ if (typeof module !== 'undefined' && module.exports) {
             } catch (error) {
                 console.error('Failed to get topic list:', error);
                 return Promise.resolve([]);
+            }
+        }
+
+        getTopics() {
+            if (!this.ros || !this.state.connected) {
+                return Promise.resolve({ topics: [], types: [] });
+            }
+
+            try {
+                // Use the appropriate connection manager
+                const manager = (typeof window !== 'undefined' && window.rosManager) ?
+                    window.rosManager : window.webSocketRosManager;
+
+                if (manager && manager.getTopics) {
+                    return manager.getTopics(this.getComPort())
+                        .catch(error => {
+                            console.error('Failed to get topics:', error);
+                            return { topics: [], types: [] };
+                        });
+                } else {
+                    console.warn('getTopics not available');
+                    return Promise.resolve({ topics: [], types: [] });
+                }
+            } catch (error) {
+                console.error('Failed to get topics:', error);
+                return Promise.resolve({ topics: [], types: [] });
             }
         }
 
