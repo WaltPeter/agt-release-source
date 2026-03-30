@@ -10,7 +10,7 @@ function SimpleSprayerControl() {
     useEffect(() => {
         // REQUIRED: Initialize with development configuration
         MODULE_INTERFACE.init({
-            moduleName: 'sprayer_module_v1',
+            moduleName: 'sprayer_module_v2_2',
             robotConfig: {
                 com_port: 'ws://localhost:9090',
                 namespace: 'test_robot',

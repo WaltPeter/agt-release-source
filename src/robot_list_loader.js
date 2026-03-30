@@ -61,7 +61,7 @@ function load_robot_list_from_storage() {
                         reason = 'corrupted module name';
                     }
                     // Check for deprecated modules
-                    else if (moduleName === 'sprayer_module_v2') {
+                    else if (DEPRECATED_MODULES.includes(moduleName)) {
                         shouldRemove = true;
                         reason = 'deprecated module';
                     }
