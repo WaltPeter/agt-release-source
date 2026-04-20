@@ -1,0 +1,241 @@
+{
+  "fileType": "ui-developer-template",
+  "version": "1.0",
+  "name": "input-component---sync",
+  "displayName": "Input Component Sync",
+  "description": "Input component sync example",
+  "codeName": "input_component_-_sync",
+  "provider": "ViTrox AgriTech",
+  "templateVersion": "1.0",
+  "menu": {
+    "components": [
+      {
+        "type": "canvas-split",
+        "splitLayout": {
+          "direction": "column"
+        },
+        "splitChildren": [
+          {
+            "id": "h1_c3a8c85c",
+            "type": "h1",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "Input Components - Sync",
+              "fontSize": "24pt",
+              "textColor": "white",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "p_d08d44b4",
+            "type": "p",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "This example demonstrates the state synchronization feature available on selected input components.\nClick the Dashboard tab above to begin.",
+              "fontSize": "11pt",
+              "textColor": "white",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "container_c99787a0",
+            "type": "container",
+            "sizing": {
+              "mode": "auto-fit"
+            },
+            "properties": {}
+          }
+        ]
+      }
+    ],
+    "width": "330px",
+    "height": "490px"
+  },
+  "dialog": {
+    "components": [
+      {
+        "type": "canvas-split",
+        "splitLayout": {
+          "direction": "column"
+        },
+        "splitChildren": [
+          {
+            "id": "h1_f63cdede",
+            "type": "h1",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "Input Components - Sync",
+              "fontSize": "24pt",
+              "textColor": "white",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "p_f58c5e05",
+            "type": "p",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "State synchronization keeps the input component's displayed value aligned with the robot's actual state. In addition to the command topic used for publishing, a secondary topic is subscribed to receive periodic state feedback from the robot. For example, while a Toggle publishes to /ROBOT_NAMESPACE/cmd/pump, the robot can publish the current state to /ROBOT_NAMESPACE/data/pump, which the client then uses to update the component.\n\nThis feature is currently supported on the Toggle and Slider components. To enable it, select the component and configure the feedback topic in the Sync section of the Properties panel, as shown below.",
+              "fontSize": "11pt",
+              "textColor": "white",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "image_5ef151ff",
+            "type": "image",
+            "sizing": {
+              "mode": "auto-fit"
+            },
+            "properties": {
+              "id": "image_5ef151ff",
+              "left": 0,
+              "top": 0,
+              "width": "auto",
+              "height": "auto",
+              "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/input-sync-1.png?raw=true",
+              "alt": ""
+            },
+            "position": {
+              "left": "0px",
+              "top": "0px"
+            }
+          },
+          {
+            "id": "p_53d8642a",
+            "type": "p",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "The feedback topic must publish a boolean for the Toggle component, whereas the Slider component accepts any numeric type. For advanced use cases, a subfield of the message can be specified using dot notation — for example, /TOPIC.data.2 to access the third element of an array, or /TOPIC.linear.x to access a nested field of a structured message.",
+              "fontSize": "11pt",
+              "textColor": "white",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "image_9f9e4722",
+            "type": "image",
+            "sizing": {
+              "mode": "auto-fit"
+            },
+            "properties": {
+              "id": "image_9f9e4722",
+              "left": 0,
+              "top": 0,
+              "width": "auto",
+              "height": "auto",
+              "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/input-sync-2.png?raw=true",
+              "alt": ""
+            },
+            "position": {
+              "left": "0px",
+              "top": "0px"
+            }
+          },
+          {
+            "id": "h2_300e6f04",
+            "type": "h2",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "Example",
+              "fontSize": "18pt",
+              "textColor": "white",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "split_17a607e7",
+            "type": "split-container",
+            "splitLayout": {
+              "direction": "row"
+            },
+            "splitChildren": [
+              {
+                "id": "toggle_64ca37f4",
+                "type": "toggle",
+                "sizing": {
+                  "mode": "auto-fit"
+                },
+                "properties": {
+                  "toggleDefault": "false",
+                  "toggleLabel": "Toggle",
+                  "toggleAlignment": "left",
+                  "toggleLayout": "horizontal",
+                  "stateTopic": "/${ROBOT_NAMESPACE}/data/test1",
+                  "stateTopicType": "std_msgs/msg/Bool",
+                  "onChange": "{\"topic\":\"/cmd/test1\",\"command\":\"{\\n   data: ${toggle_64ca37f4.value}\\n}\",\"messageType\":\"std_msgs/msg/Bool\"}"
+                }
+              },
+              {
+                "id": "slider_558bfdf7",
+                "type": "slider",
+                "sizing": {
+                  "mode": "auto-fit"
+                },
+                "properties": {
+                  "sliderOrientation": "horizontal",
+                  "sliderLabel": "Slider",
+                  "sliderMin": "0",
+                  "sliderMax": "100",
+                  "sliderDefault": "50",
+                  "stateTopic": "/${ROBOT_NAMESPACE}/data/test2.1.data",
+                  "stateTopicType": "std_msgs/msg/Float32MultiArray",
+                  "onChange": "{\"topic\":\"/cmd/test2\",\"command\":\"{\\n   data: ${slider_558bfdf7.value}\\n}\",\"messageType\":\"std_msgs/msg/Float32\"}"
+                }
+              }
+            ]
+          },
+          {
+            "id": "p_test_cli",
+            "type": "p",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "To test the sync behaviour from the ROS 2 CLI, publish to the corresponding feedback topics:\n\nros2 topic pub /robot_1/data/test1 std_msgs/msg/Bool \"{data: true}\"\nros2 topic pub /robot_1/data/test2 std_msgs/msg/Float32MultiArray \"{data: [0, 75]}\"",
+              "fontSize": "11pt",
+              "textColor": "white",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          }
+        ]
+      }
+    ],
+    "width": "100%",
+    "height": "100%",
+    "enabled": true
+  }
+}
