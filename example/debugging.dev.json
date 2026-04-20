@@ -1,0 +1,560 @@
+{
+  "fileType": "ui-developer-template",
+  "version": "1.0",
+  "name": "debugging",
+  "displayName": "Debugging",
+  "description": "debugging",
+  "codeName": "debugging",
+  "provider": "",
+  "templateVersion": "1.0",
+  "menu": {
+    "components": [
+      {
+        "type": "canvas-split",
+        "splitLayout": {
+          "direction": "column"
+        },
+        "splitChildren": [
+          {
+            "id": "h1_c13a7d6a",
+            "type": "h1",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "Debugging",
+              "fontSize": "24pt",
+              "textColor": "white",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "split_16c6ae22",
+            "type": "split-container",
+            "splitLayout": {
+              "direction": "column"
+            },
+            "splitChildren": [
+              {
+                "id": "p_f84d39f8",
+                "type": "p",
+                "sizing": {
+                  "mode": "content-fit"
+                },
+                "properties": {
+                  "textContent": "This file serve as a tutorial on debugging your custom module UI.\n \nClick the Dashboard tab above to begin.",
+                  "fontSize": "11pt",
+                  "textColor": "white",
+                  "fontWeight": "500",
+                  "fontStyle": "normal",
+                  "textAlign": "left",
+                  "borderBottom": false
+                }
+              },
+              {
+                "id": "container_2f498cea",
+                "type": "container",
+                "sizing": {
+                  "mode": "auto-fit"
+                },
+                "properties": {}
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "width": "330px",
+    "height": "490px"
+  },
+  "dialog": {
+    "components": [
+      {
+        "type": "canvas-split",
+        "splitLayout": {
+          "direction": "column"
+        },
+        "splitChildren": [
+          {
+            "id": "h1_b65e6742",
+            "type": "h1",
+            "sizing": {
+              "mode": "content-fit"
+            },
+            "properties": {
+              "textContent": "Debugging",
+              "fontSize": "24pt",
+              "textColor": "white",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "textAlign": "left",
+              "borderBottom": false
+            }
+          },
+          {
+            "id": "split_05cb651a",
+            "type": "split-container",
+            "splitLayout": {
+              "direction": "column"
+            },
+            "splitChildren": [
+              {
+                "id": "p_a83ef519",
+                "type": "p",
+                "sizing": {
+                  "mode": "content-fit"
+                },
+                "properties": {
+                  "textContent": "The process of debugging your custom module UI separate into two parts. First, debug function in UI Developer. Second, local deployment. ",
+                  "fontSize": "11pt",
+                  "textColor": "white",
+                  "fontWeight": "500",
+                  "fontStyle": "normal",
+                  "textAlign": "left",
+                  "borderBottom": false
+                }
+              },
+              {
+                "id": "card_ea0f5008",
+                "type": "card",
+                "sizing": {
+                  "mode": "auto-fit"
+                },
+                "properties": {
+                  "id": "card_ea0f5008",
+                  "left": 0,
+                  "top": 0,
+                  "width": 100,
+                  "height": 30,
+                  "hasNestedContainer": true,
+                  "nestedContainerId": "card_35d5e5d8_container_1776662651074",
+                  "moduleName": "UI Developer",
+                  "moduleVersion": "v1",
+                  "iconUrl": "url(\"resources/svg/gear.svg\")",
+                  "isExpanded": true,
+                  "expandBtnTitle": ""
+                },
+                "position": {
+                  "left": "0px",
+                  "top": "0px"
+                },
+                "children": [],
+                "splitLayout": {
+                  "direction": "column"
+                },
+                "splitChildren": [
+                  {
+                    "id": "p_280f173a",
+                    "type": "p",
+                    "sizing": {
+                      "mode": "content-fit"
+                    },
+                    "properties": {
+                      "textContent": "Access the debug function from the top bar button. ",
+                      "fontSize": "11pt",
+                      "textColor": "white",
+                      "fontWeight": "500",
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "borderBottom": false
+                    }
+                  },
+                  {
+                    "id": "split_cdd67c46",
+                    "type": "split-container",
+                    "splitLayout": {
+                      "direction": "column"
+                    },
+                    "splitChildren": [
+                      {
+                        "id": "image_f64551ca",
+                        "type": "image",
+                        "sizing": {
+                          "mode": "auto-fit"
+                        },
+                        "properties": {
+                          "id": "image_f64551ca",
+                          "left": 0,
+                          "top": 0,
+                          "width": "auto",
+                          "height": "auto",
+                          "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-5.png?raw=true",
+                          "alt": ""
+                        },
+                        "position": {
+                          "left": "0px",
+                          "top": "0px"
+                        }
+                      },
+                      {
+                        "id": "split_3fe96cb7",
+                        "type": "split-container",
+                        "splitLayout": {
+                          "direction": "column"
+                        },
+                        "splitChildren": [
+                          {
+                            "id": "p_379cbff2",
+                            "type": "p",
+                            "sizing": {
+                              "mode": "content-fit"
+                            },
+                            "properties": {
+                              "textContent": "Note that the debug function in UI Developer is liimited. Please ensure you started a local ROS Bridge to communicate. \nros2 launch rosbridge_server rosbridge_websocket_launch.xml port:=8766",
+                              "fontSize": "11pt",
+                              "textColor": "white",
+                              "fontWeight": "500",
+                              "fontStyle": "normal",
+                              "textAlign": "left",
+                              "borderBottom": false
+                            }
+                          },
+                          {
+                            "id": "split_9f97d543",
+                            "type": "split-container",
+                            "splitLayout": {
+                              "direction": "column"
+                            },
+                            "splitChildren": [
+                              {
+                                "id": "image_b3113d84",
+                                "type": "image",
+                                "sizing": {
+                                  "mode": "auto-fit"
+                                },
+                                "properties": {
+                                  "id": "image_b3113d84",
+                                  "left": 0,
+                                  "top": 0,
+                                  "width": "auto",
+                                  "height": "auto",
+                                  "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-6.png?raw=true",
+                                  "alt": ""
+                                },
+                                "position": {
+                                  "left": "0px",
+                                  "top": "0px"
+                                }
+                              },
+                              {
+                                "id": "split_ed046152",
+                                "type": "split-container",
+                                "splitLayout": {
+                                  "direction": "column"
+                                },
+                                "splitChildren": [
+                                  {
+                                    "id": "p_716901b7",
+                                    "type": "p",
+                                    "sizing": {
+                                      "mode": "content-fit"
+                                    },
+                                    "properties": {
+                                      "textContent": "After connected to debugging target, there are several functions now available:",
+                                      "fontSize": "11pt",
+                                      "textColor": "white",
+                                      "fontWeight": "500",
+                                      "fontStyle": "normal",
+                                      "textAlign": "left",
+                                      "borderBottom": false
+                                    }
+                                  },
+                                  {
+                                    "id": "split_d3b9710c",
+                                    "type": "split-container",
+                                    "splitLayout": {
+                                      "direction": "column"
+                                    },
+                                    "splitChildren": [
+                                      {
+                                        "id": "h2_09448371",
+                                        "type": "h2",
+                                        "sizing": {
+                                          "mode": "content-fit"
+                                        },
+                                        "properties": {
+                                          "textContent": "Topic List",
+                                          "fontSize": "18pt",
+                                          "textColor": "white",
+                                          "fontWeight": "700",
+                                          "fontStyle": "normal",
+                                          "textAlign": "left",
+                                          "borderBottom": false
+                                        }
+                                      },
+                                      {
+                                        "id": "image_867e17b5",
+                                        "type": "image",
+                                        "sizing": {
+                                          "mode": "auto-fit"
+                                        },
+                                        "properties": {
+                                          "id": "image_867e17b5",
+                                          "left": 0,
+                                          "top": 0,
+                                          "width": "auto",
+                                          "height": "auto",
+                                          "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-7.png?raw=true",
+                                          "alt": ""
+                                        },
+                                        "position": {
+                                          "left": "0px",
+                                          "top": "0px"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "id": "h2_56cf6c2f",
+                                    "type": "h2",
+                                    "sizing": {
+                                      "mode": "content-fit"
+                                    },
+                                    "properties": {
+                                      "textContent": "Auto-Filling Data JSON ",
+                                      "fontSize": "18pt",
+                                      "textColor": "white",
+                                      "fontWeight": "700",
+                                      "fontStyle": "normal",
+                                      "textAlign": "left",
+                                      "borderBottom": false
+                                    }
+                                  },
+                                  {
+                                    "id": "image_bea11aeb",
+                                    "type": "image",
+                                    "sizing": {
+                                      "mode": "auto-fit"
+                                    },
+                                    "properties": {
+                                      "id": "image_bea11aeb",
+                                      "left": 0,
+                                      "top": 0,
+                                      "width": "auto",
+                                      "height": "auto",
+                                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-8.png?raw=true",
+                                      "alt": ""
+                                    },
+                                    "position": {
+                                      "left": "0px",
+                                      "top": "0px"
+                                    }
+                                  },
+                                  {
+                                    "id": "h2_5abad6ce",
+                                    "type": "h2",
+                                    "sizing": {
+                                      "mode": "content-fit"
+                                    },
+                                    "properties": {
+                                      "textContent": "Subscriber/Publisher Testing",
+                                      "fontSize": "18pt",
+                                      "textColor": "white",
+                                      "fontWeight": "700",
+                                      "fontStyle": "normal",
+                                      "textAlign": "left",
+                                      "borderBottom": false
+                                    }
+                                  },
+                                  {
+                                    "id": "image_28ffca6b",
+                                    "type": "image",
+                                    "sizing": {
+                                      "mode": "auto-fit"
+                                    },
+                                    "properties": {
+                                      "id": "image_28ffca6b",
+                                      "left": 0,
+                                      "top": 0,
+                                      "width": "auto",
+                                      "height": "auto",
+                                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-9.png?raw=true",
+                                      "alt": ""
+                                    },
+                                    "position": {
+                                      "left": "0px",
+                                      "top": "0px"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "card_999d4a5a",
+                "type": "card",
+                "sizing": {
+                  "mode": "auto-fit"
+                },
+                "properties": {
+                  "id": "card_999d4a5a",
+                  "left": 0,
+                  "top": 0,
+                  "width": 100,
+                  "height": 30,
+                  "hasNestedContainer": true,
+                  "nestedContainerId": "card_28f24dbf_container_1776662651092",
+                  "moduleName": "Local Deployment",
+                  "moduleVersion": "v1",
+                  "iconUrl": "url(\"resources/svg/gear.svg\")",
+                  "isExpanded": true,
+                  "expandBtnTitle": ""
+                },
+                "position": {
+                  "left": "0px",
+                  "top": "0px"
+                },
+                "children": [],
+                "splitLayout": {
+                  "direction": "column"
+                },
+                "splitChildren": [
+                  {
+                    "id": "p_f7e990ae",
+                    "type": "p",
+                    "sizing": {
+                      "mode": "content-fit"
+                    },
+                    "properties": {
+                      "textContent": "Add a new Robot in Home. ",
+                      "fontSize": "11pt",
+                      "textColor": "white",
+                      "fontWeight": "500",
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "borderBottom": false
+                    }
+                  },
+                  {
+                    "id": "image_b18fba43",
+                    "type": "image",
+                    "sizing": {
+                      "mode": "auto-fit"
+                    },
+                    "properties": {
+                      "id": "image_b18fba43",
+                      "left": 0,
+                      "top": 0,
+                      "width": "auto",
+                      "height": "auto",
+                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-1.png?raw=true",
+                      "alt": ""
+                    },
+                    "position": {
+                      "left": "0px",
+                      "top": "0px"
+                    }
+                  },
+                  {
+                    "id": "image_d3166988",
+                    "type": "image",
+                    "sizing": {
+                      "mode": "auto-fit"
+                    },
+                    "properties": {
+                      "id": "image_d3166988",
+                      "left": 0,
+                      "top": 0,
+                      "width": "auto",
+                      "height": "auto",
+                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-2.png?raw=true",
+                      "alt": ""
+                    },
+                    "position": {
+                      "left": "0px",
+                      "top": "0px"
+                    }
+                  },
+                  {
+                    "id": "p_0bdb3282",
+                    "type": "p",
+                    "sizing": {
+                      "mode": "content-fit"
+                    },
+                    "properties": {
+                      "textContent": "Open the Robot and  import your saved module .dev.json file. ",
+                      "fontSize": "11pt",
+                      "textColor": "white",
+                      "fontWeight": "500",
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "borderBottom": false
+                    }
+                  },
+                  {
+                    "id": "image_9fe9416f",
+                    "type": "image",
+                    "sizing": {
+                      "mode": "auto-fit"
+                    },
+                    "properties": {
+                      "id": "image_9fe9416f",
+                      "left": 0,
+                      "top": 0,
+                      "width": "auto",
+                      "height": "auto",
+                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-3.png?raw=true",
+                      "alt": ""
+                    },
+                    "position": {
+                      "left": "0px",
+                      "top": "0px"
+                    }
+                  },
+                  {
+                    "id": "p_dc827915",
+                    "type": "p",
+                    "sizing": {
+                      "mode": "content-fit"
+                    },
+                    "properties": {
+                      "textContent": "Ready for testing. ",
+                      "fontSize": "11pt",
+                      "textColor": "white",
+                      "fontWeight": "500",
+                      "fontStyle": "normal",
+                      "textAlign": "left",
+                      "borderBottom": false
+                    }
+                  },
+                  {
+                    "id": "image_332110a4",
+                    "type": "image",
+                    "sizing": {
+                      "mode": "auto-fit"
+                    },
+                    "properties": {
+                      "id": "image_332110a4",
+                      "left": 0,
+                      "top": 0,
+                      "width": "auto",
+                      "height": "auto",
+                      "src": "https://github.com/WaltPeter/agt-release-source/blob/res/example/res/debugging-4.png?raw=true",
+                      "alt": ""
+                    },
+                    "position": {
+                      "left": "0px",
+                      "top": "0px"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "width": "100%",
+    "height": "100%",
+    "enabled": true
+  }
+}
